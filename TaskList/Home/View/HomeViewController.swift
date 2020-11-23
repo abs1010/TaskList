@@ -19,9 +19,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         segmentedControl.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         let titleTextAttributesForSelected = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)]
         segmentedControl.setTitleTextAttributes(titleTextAttributesForSelected, for: .selected)
-        
         segmentedControl.backgroundColor = .secondarySystemBackground
-        segmentedControl.selectedSegmentIndex = 3
+        segmentedControl.selectedSegmentIndex = 0
         
         return segmentedControl
     }()
@@ -39,6 +38,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setUpConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     private func setUp() {
         
         view.backgroundColor = .secondarySystemBackground
@@ -48,7 +51,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         navigationController?.navigationBar.isTranslucent = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTotList))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(goToTaskView))
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -72,7 +75,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    @objc private func addTotList() {
+    @objc private func goToTaskView() {
+        
+        navigationController?.pushViewController(NewTaskViewController(), animated: false)
         
     }
     

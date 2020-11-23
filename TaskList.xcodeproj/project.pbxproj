@@ -7,18 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC97AC2B256C813B00F53039 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC97AC2A256C813B00F53039 /* NewTaskViewController.swift */; };
 		BCF8DDF22569B9780045F6D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF8DDF12569B9780045F6D2 /* AppDelegate.swift */; };
 		BCF8DDF42569B9780045F6D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF8DDF32569B9780045F6D2 /* SceneDelegate.swift */; };
-		BCF8DDF62569B9780045F6D2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF8DDF52569B9780045F6D2 /* ViewController.swift */; };
+		BCF8DDF62569B9780045F6D2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF8DDF52569B9780045F6D2 /* HomeViewController.swift */; };
 		BCF8DDFB2569B9790045F6D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCF8DDFA2569B9790045F6D2 /* Assets.xcassets */; };
 		BCF8DDFE2569B9790045F6D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCF8DDFC2569B9790045F6D2 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC97AC2A256C813B00F53039 /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
 		BCF8DDEE2569B9780045F6D2 /* TaskList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF8DDF12569B9780045F6D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCF8DDF32569B9780045F6D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BCF8DDF52569B9780045F6D2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BCF8DDF52569B9780045F6D2 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BCF8DDFA2569B9790045F6D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCF8DDFD2569B9790045F6D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BCF8DDFF2569B9790045F6D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,7 +49,7 @@
 		BC97AC23256C6F7600F53039 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				BCF8DDF52569B9780045F6D2 /* ViewController.swift */,
+				BC97AC28256C811700F53039 /* View */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -55,6 +57,7 @@
 		BC97AC24256C6FB500F53039 /* NewTask */ = {
 			isa = PBXGroup;
 			children = (
+				BC97AC29256C812000F53039 /* View */,
 			);
 			path = NewTask;
 			sourceTree = "<group>";
@@ -66,6 +69,22 @@
 				BCF8DDFA2569B9790045F6D2 /* Assets.xcassets */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		BC97AC28256C811700F53039 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BCF8DDF52569B9780045F6D2 /* HomeViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BC97AC29256C812000F53039 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BC97AC2A256C813B00F53039 /* NewTaskViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		BCF8DDE52569B9780045F6D2 = {
@@ -166,8 +185,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCF8DDF62569B9780045F6D2 /* ViewController.swift in Sources */,
+				BCF8DDF62569B9780045F6D2 /* HomeViewController.swift in Sources */,
 				BCF8DDF22569B9780045F6D2 /* AppDelegate.swift in Sources */,
+				BC97AC2B256C813B00F53039 /* NewTaskViewController.swift in Sources */,
 				BCF8DDF42569B9780045F6D2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
