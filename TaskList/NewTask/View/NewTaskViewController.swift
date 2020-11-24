@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import RxSwift
 
-class NewTaskViewController: UIViewController {
+class NewTaskViewController: UIViewController, UITextFieldDelegate {
     
-    let segmentedControl: UISegmentedControl = {
+    private let segmentedControl: UISegmentedControl = {
         let items = ["High", "Medium", "Low"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.selectedSegmentTintColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
@@ -24,6 +25,27 @@ class NewTaskViewController: UIViewController {
         
         return segmentedControl
     }()
+    
+    private let textField: UITextField = {
+        let textField = UITextField(frame: .zero)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .white
+        textField.placeholder = "Type the task name"
+        textField.textAlignment = .center
+        textField.textColor = .black
+        textField.layer.cornerRadius = 5.0
+        textField.layer.borderWidth = 0.5
+        textField.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
+        return textField
+    }()
+    
+    
+    private var selectedTask = PublishSubject<Task>()
+    
+    var setObjectObservable : Observable<Task> {
+        return selectedTask.asObservable()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,24 +63,34 @@ class NewTaskViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(addToList))
     
         view.addSubview(segmentedControl)
-        //view.addSubview(tableView)
+        view.addSubview(textField)
+        
+        textField.becomeFirstResponder()
         
         NSLayoutConstraint.activate([
             segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
-//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            textField.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            textField.heightAnchor.constraint(equalToConstant: 32)
         ])
+        
+        textField.delegate = self
         
     }
     
     @objc private func addToList() {
         
-        print("ADD TO VIEW")
+        selectedTask.onNext(Task(name: textField.text!, priority: .heigh))
         
+        navigationController?.popViewController(animated: true)
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
     
 }

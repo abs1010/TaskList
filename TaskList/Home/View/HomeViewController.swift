@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import RxSwift
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let segmentedControl: UISegmentedControl = {
+    private let segmentedControl: UISegmentedControl = {
         let items = ["All", "High", "Medium", "Low"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.selectedSegmentTintColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
@@ -25,11 +26,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return segmentedControl
     }()
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,8 +80,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc private func goToTaskView() {
         
-        navigationController?.pushViewController(NewTaskViewController(), animated: false)
+        let viewController = NewTaskViewController()
         
+        viewController.setObjectObservable.subscribe(onNext: { _task in
+            self.updateTableView(task: _task)
+            }).disposed(by: disposeBag)
+        
+        navigationController?.pushViewController(viewController, animated: false)
+        
+    }
+    
+    private func updateTableView(task: Task) {
+        print(task.name)
+        print(task.priority)
     }
     
     //mark: - TableView Methods
