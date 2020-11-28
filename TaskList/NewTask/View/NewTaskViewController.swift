@@ -83,7 +83,9 @@ class NewTaskViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func addToList() {
         
-        selectedTask.onNext(Task(name: textField.text!, priority: .heigh))
+        let priority = Priority.allCases[segmentedControl.selectedSegmentIndex + 1]
+        
+        selectedTask.onNext(Task(name: textField.text!, priority: priority))
         
         navigationController?.popViewController(animated: true)
         

@@ -8,13 +8,14 @@
 
 import Foundation
 
-enum priority: CaseIterable {
-    case low
-    case medium
-    case heigh
+enum Priority: Int, CaseIterable {
+    case all = 0
+    case heigh = 1
+    case medium = 2
+    case low = 3
 }
 
 struct Task {
     let name: String
-    let priority: priority
+    let priority: Priority
 }

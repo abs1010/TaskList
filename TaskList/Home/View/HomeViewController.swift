@@ -8,8 +8,9 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController {
     
     private let segmentedControl: UISegmentedControl = {
         let items = ["All", "High", "Medium", "Low"]
@@ -34,6 +35,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     let disposeBag = DisposeBag()
     
+    private var tasks = BehaviorRelay<[Task]>(value: [])
+    private var filteredTasks = [Task]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -55,6 +59,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         navigationController?.navigationBar.isTranslucent = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(goToTaskView))
+        
+        segmentedControl.addTarget(self, action: #selector(changeSelectionOnSegmentedControl(sender:)), for: .valueChanged)
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -78,37 +84,81 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    @objc private func changeSelectionOnSegmentedControl(sender: UISegmentedControl) {
+        
+        let index = segmentedControl.selectedSegmentIndex
+        
+        self.filterTasks(by: Priority.allCases[index])
+    
+    }
+    
     @objc private func goToTaskView() {
         
         let viewController = NewTaskViewController()
         
         viewController.setObjectObservable.subscribe(onNext: { _task in
-            self.updateTableView(task: _task)
+            
+            var existingTasks = self.tasks.value
+            existingTasks.append(_task)
+            
+            self.tasks.accept(existingTasks)
+            
             }).disposed(by: disposeBag)
         
         navigationController?.pushViewController(viewController, animated: false)
         
     }
     
-    private func updateTableView(task: Task) {
-        print(task.name)
-        print(task.priority)
+    private func filterTasks(by priority: Priority?) {
+        
+        guard let _priority = priority else {
+            self.filteredTasks = tasks.value
+            return
+        }
+        
+        self.tasks.map { mappedTasks in
+            return mappedTasks.filter { $0.priority == _priority}
+        }.subscribe(onNext: { [weak self ]tasks in
+            
+            self?.filteredTasks = tasks
+            
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+            
+            }).disposed(by: disposeBag)
+        
     }
-    
+
+}
+
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     //mark: - TableView Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 40
+        
+        if segmentedControl.selectedSegmentIndex == 0 {
+            return tasks.value.count
+        }
+        
+        return filteredTasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         
-        cell.detailTextLabel?.text = "Texto \(indexPath.row)"
+        let boolean = segmentedControl.selectedSegmentIndex == 0
+        
+        cell.detailTextLabel?.text = boolean ? tasks.value[indexPath.row].name : filteredTasks[indexPath.row].name
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        //self.filteredTasks.remove(at: indexPath.row)
+        
+    }
 
 }
